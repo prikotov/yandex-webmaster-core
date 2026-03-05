@@ -17,7 +17,7 @@ class WebmasterClient
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->hostId = $hostId;
-        $this->tokenFile = $tokenFile ?? getcwd() . '/yandex_webmaster_token.json';
+        $this->tokenFile = $tokenFile ?? getcwd() . '/webmaster_token.json';
     }
     
     public static function checkGitignore(): void
@@ -25,7 +25,7 @@ class WebmasterClient
         $gitignoreFile = getcwd() . '/.gitignore';
         $requiredEntries = [
             'webmaster_config.json',
-            'yandex_webmaster_token.json',
+            'webmaster_token.json',
             'webmaster_reports/'
         ];
         
