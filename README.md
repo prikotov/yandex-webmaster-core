@@ -65,7 +65,7 @@ git clone https://github.com/prikotov/yandex-webmaster-queries.git .opencode/ski
 ```
 your-project/
 ├── webmaster_config.json          # Общий конфиг (создаётся вручную в корне проекта)
-├── yandex_webmaster_token.json    # Создаётся автоматически при первом запуске
+├── webmaster_token.json           # Создаётся автоматически при первом запуске
 ├── webmaster_reports/             # Создаётся автоматически при запуске отчёта
 │   └── YYYY-MM-DD/                # Папка с отчётами за день
 └── .opencode/skills/
