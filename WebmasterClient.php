@@ -17,16 +17,16 @@ class WebmasterClient
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->hostId = $hostId;
-        $this->tokenFile = $tokenFile ?? getcwd() . '/webmaster_token.json';
+        $this->tokenFile = $tokenFile ?? getcwd() . '/yandex_webmaster_token.json';
     }
     
     public static function checkGitignore(): void
     {
         $gitignoreFile = getcwd() . '/.gitignore';
         $requiredEntries = [
-            'webmaster_config.json',
-            'webmaster_token.json',
-            'webmaster_reports/'
+            'yandex_webmaster_config.json',
+            'yandex_webmaster_token.json',
+            'yandex_webmaster_reports/'
         ];
         
         if (!file_exists($gitignoreFile)) {
@@ -56,7 +56,7 @@ class WebmasterClient
     
     public static function loadConfig(): array
     {
-        $configFile = getcwd() . '/webmaster_config.json';
+        $configFile = getcwd() . '/yandex_webmaster_config.json';
         
         if (!file_exists($configFile)) {
             file_put_contents($configFile, json_encode([
@@ -392,7 +392,7 @@ class WebmasterClient
     
     public static function createReportDir(): string
     {
-        $reportDir = getcwd() . '/webmaster_reports';
+        $reportDir = getcwd() . '/yandex_webmaster_reports';
         if (!is_dir($reportDir)) {
             mkdir($reportDir, 0755, true);
         }

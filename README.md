@@ -40,7 +40,7 @@ git clone https://github.com/prikotov/yandex-webmaster-core.git .opencode/skills
 ### 3. Создайте конфигурацию
 
 ```bash
-cp .opencode/skills/yandex-webmaster-core/webmaster_config.example.json ./webmaster_config.json
+cp .opencode/skills/yandex-webmaster-core/yandex_webmaster_config.example.json ./yandex_webmaster_config.json
 ```
 
 Заполните:
@@ -64,13 +64,13 @@ git clone https://github.com/prikotov/yandex-webmaster-queries.git .opencode/ski
 
 ```
 your-project/
-├── webmaster_config.json          # Общий конфиг (создаётся вручную в корне проекта)
-├── webmaster_token.json           # Создаётся автоматически при первом запуске
-├── webmaster_reports/             # Создаётся автоматически при запуске отчёта
-│   └── YYYY-MM-DD/                # Папка с отчётами за день
+├── yandex_webmaster_config.json    # Общий конфиг (создаётся вручную в корне проекта)
+├── yandex_webmaster_token.json     # Создаётся автоматически при первом запуске
+├── yandex_webmaster_reports/       # Создаётся автоматически при запуске отчёта
+│   └── YYYY-MM-DD/                 # Папка с отчётами за день
 └── .opencode/skills/
-    ├── yandex-webmaster-core/     # Библиотека
-    └── yandex-webmaster-queries/  # Поисковые запросы
+    ├── yandex-webmaster-core/      # Библиотека
+    └── yandex-webmaster-queries/   # Поисковые запросы
 ```
 
 ## Безопасность
@@ -78,9 +78,9 @@ your-project/
 WebmasterClient автоматически защищает конфиденциальные данные от случайной публикации в git. При первом запуске он проверяет `.gitignore` и добавляет недостающие записи.
 
 Защищаемые файлы:
-- `webmaster_config.json` — OAuth-данные приложения
+- `yandex_webmaster_config.json` — OAuth-данные приложения
 - `yandex_webmaster_token.json` — токен авторизации
-- `webmaster_reports/` — папка с отчётами
+- `yandex_webmaster_reports/` — папка с отчётами
 
 ## Создание нового skill
 
