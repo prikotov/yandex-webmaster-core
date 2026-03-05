@@ -68,7 +68,7 @@ your-project/
 ├── yandex_webmaster_token.json     # Создаётся автоматически при первом запуске
 ├── yandex_webmaster_reports/       # Создаётся автоматически при запуске отчёта
 │   └── YYYY-MM-DD/                 # Папка с отчётами за день
-│       └── yandex_webmaster_*_YYYY-MM-DD_HH-MM-SS.csv/.md  # Файлы отчётов
+│       └── yandex_webmaster_*      # Файлы отчётов
 └── .opencode/skills/
     ├── yandex-webmaster-core/      # Библиотека
     └── yandex-webmaster-queries/   # Поисковые запросы
