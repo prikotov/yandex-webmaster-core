@@ -1,5 +1,9 @@
 {
     "client_id": "ваш_client_id",
     "client_secret": "ваш_client_secret",
-    "host_id": null
+    "hosts": {
+        "prikotov.pro": "https:prikotov.pro:443",
+        "task.ai-aid.pro": "https:task.ai-aid.pro:443"
+    },
+    "default_host": "prikotov.pro"
 }

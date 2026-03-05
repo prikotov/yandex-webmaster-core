@@ -48,11 +48,15 @@ cp .opencode/skills/yandex-webmaster-core/yandex_webmaster_config.example.json .
 {
     "client_id": "ваш_client_id",
     "client_secret": "ваш_client_secret",
-    "host_id": null
+    "hosts": {
+        "site1.ru": "https:site1.ru:443",
+        "site2.ru": "https:site2.ru:443"
+    },
+    "default_host": "site1.ru"
 }
 ```
 
-`host_id` можно оставить null — скрипт выберет первый сайт из списка, или укажите конкретный ID (например, `https:site.ru:443`).
+Параметр `default_host` определяет сайт, который используется если не указан `--site`.
 
 ### 4. Установите нужные skills
 
@@ -94,10 +98,12 @@ require_once __DIR__ . '/../yandex-webmaster-core/WebmasterClient.php';
 WebmasterClient::checkGitignore();
 $config = WebmasterClient::loadConfig();
 
+$hostId = WebmasterClient::getHostIdFromConfig($config);
+
 $client = new WebmasterClient(
     $config['client_id'],
     $config['client_secret'],
-    $config['host_id'] ?? null
+    $hostId
 );
 
 // Ваш код...
@@ -113,17 +119,21 @@ require_once __DIR__ . '/../yandex-webmaster-core/WebmasterClient.php';
 WebmasterClient::checkGitignore();
 $config = WebmasterClient::loadConfig();
 
-// 2. Создание клиента
+// 2. Получение host_id (можно указать сайт или использовать default)
+$hostId = WebmasterClient::getHostIdFromConfig($config, 'site1.ru');
+
+// 3. Создание клиента
 $client = new WebmasterClient(
     $config['client_id'],
     $config['client_secret'],
-    $config['host_id'] ?? null
+    $hostId,
+    'site1.ru'  // опционально, для вывода в логах
 );
 
-// 3. Запрос популярных запросов
+// 4. Запрос популярных запросов
 $data = $client->getPopularQueries('2026-01-01', '2026-02-28', 100);
 
-// 4. Преобразование ответа
+// 5. Преобразование ответа
 $rows = [];
 foreach ($data['queries'] ?? [] as $item) {
     $indicators = $item['indicators'] ?? [];
@@ -138,11 +148,23 @@ foreach ($data['queries'] ?? [] as $item) {
     ];
 }
 
-// 5. Сохранение отчёта
+// 6. Сохранение отчёта
 $reportDir = WebmasterClient::createReportDir();
 $timestamp = WebmasterClient::getFileTimestamp();
 WebmasterClient::saveCsv($rows, "$reportDir/yandex_webmaster_queries_$timestamp.csv");
 WebmasterClient::saveMarkdown($rows, "$reportDir/yandex_webmaster_queries_$timestamp.md", 'Поисковые запросы', '2026-01-01', '2026-02-28');
+```
+
+### Выбор сайта
+
+Все skills поддерживают параметр `--site`:
+
+```bash
+# Использовать default_host из конфига
+php .opencode/skills/yandex-webmaster-queries/queries.php
+
+# Указать конкретный сайт
+php .opencode/skills/yandex-webmaster-queries/queries.php --site task.ai-aid.pro
 ```
 
 ## Требования

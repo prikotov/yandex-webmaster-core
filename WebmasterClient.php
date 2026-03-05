@@ -10,13 +10,15 @@ class WebmasterClient
     private string $clientSecret;
     private ?int $userId = null;
     private ?string $hostId;
+    private ?string $siteName;
     private string $tokenFile;
     
-    public function __construct(string $clientId, string $clientSecret, ?string $hostId = null, ?string $tokenFile = null)
+    public function __construct(string $clientId, string $clientSecret, ?string $hostId = null, ?string $siteName = null, ?string $tokenFile = null)
     {
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->hostId = $hostId;
+        $this->siteName = $siteName;
         $this->tokenFile = $tokenFile ?? getcwd() . '/yandex_webmaster_token.json';
     }
     
@@ -62,14 +64,19 @@ class WebmasterClient
             file_put_contents($configFile, json_encode([
                 'client_id' => 'ВАШ_CLIENT_ID',
                 'client_secret' => 'ВАШ_CLIENT_SECRET',
-                'host_id' => null
+                'hosts' => [
+                    'сайт1.ru' => 'https:сайт1.ru:443',
+                    'сайт2.ru' => 'https:сайт2.ru:443'
+                ],
+                'default_host' => 'сайт1.ru'
             ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
             
             echo "\n  Создан файл конфигурации: $configFile\n";
             echo "  Заполните в нём:\n";
             echo "    - client_id: ID приложения Яндекс.OAuth\n";
             echo "    - client_secret: Пароль приложения\n";
-            echo "    - host_id: ID сайта в Вебмастере (опционально)\n\n";
+            echo "    - hosts: список сайтов с их host_id\n";
+            echo "    - default_host: имя сайта по умолчанию\n\n";
             echo "  Как создать OAuth-приложение:\n";
             echo "  1. https://oauth.yandex.ru/client/new\n";
             echo "  2. Платформа: Веб-сервисы\n";
@@ -88,6 +95,37 @@ class WebmasterClient
         }
         
         return $config;
+    }
+    
+    public static function getHostIdFromConfig(array $config, ?string $siteName = null): ?string
+    {
+        if (!isset($config['hosts'])) {
+            return $config['host_id'] ?? null;
+        }
+        
+        if ($siteName === null) {
+            $siteName = $config['default_host'] ?? array_key_first($config['hosts']);
+        }
+        
+        if (!isset($config['hosts'][$siteName])) {
+            $available = implode(', ', array_keys($config['hosts']));
+            throw new Exception("Сайт '$siteName' не найден. Доступные: $available");
+        }
+        
+        return $config['hosts'][$siteName];
+    }
+    
+    public static function getAvailableSites(array $config): array
+    {
+        if (isset($config['hosts'])) {
+            return array_keys($config['hosts']);
+        }
+        return [];
+    }
+    
+    public function getSiteName(): ?string
+    {
+        return $this->siteName;
     }
     
     private function getAuthUrl(): string
