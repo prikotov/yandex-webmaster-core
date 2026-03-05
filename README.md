@@ -68,6 +68,7 @@ your-project/
 ├── yandex_webmaster_token.json     # Создаётся автоматически при первом запуске
 ├── yandex_webmaster_reports/       # Создаётся автоматически при запуске отчёта
 │   └── YYYY-MM-DD/                 # Папка с отчётами за день
+│       └── yandex_webmaster_queries_YYYY-MM-DD_HH-MM-SS.csv/.md  # Поисковые запросы
 └── .opencode/skills/
     ├── yandex-webmaster-core/      # Библиотека
     └── yandex-webmaster-queries/   # Поисковые запросы
@@ -139,8 +140,9 @@ foreach ($data['queries'] ?? [] as $item) {
 
 // 5. Сохранение отчёта
 $reportDir = WebmasterClient::createReportDir();
-WebmasterClient::saveCsv($rows, "$reportDir/queries.csv");
-WebmasterClient::saveMarkdown($rows, "$reportDir/queries.md", 'Поисковые запросы', '2026-01-01', '2026-02-28');
+$timestamp = WebmasterClient::getFileTimestamp();
+WebmasterClient::saveCsv($rows, "$reportDir/yandex_webmaster_queries_$timestamp.csv");
+WebmasterClient::saveMarkdown($rows, "$reportDir/yandex_webmaster_queries_$timestamp.md", 'Поисковые запросы', '2026-01-01', '2026-02-28');
 ```
 
 ## Требования
